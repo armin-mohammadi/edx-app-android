@@ -1,11 +1,14 @@
 package org.edx.mobile.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 /**
  * Created by miankhalid on 8/3/15.
@@ -37,5 +40,26 @@ public class FileUtil {
         } finally {
             inputStream.close();
         }
+    }
+
+    /**
+     * Deletes a single file and/or recursively deletes files/folders within a folder before
+     * deleting it.
+     *
+     * @param fileOrDirectory The file/folder that needs to be deleted.
+     * @param exceptions      Name of the file/folder that needs to be skipped while deletion.
+     */
+    public static void deleteRecursive(File fileOrDirectory, List<String> exceptions) {
+        if (exceptions.contains(fileOrDirectory.getName())) return;
+
+        if (fileOrDirectory.isDirectory()) {
+            File[] filesList = fileOrDirectory.listFiles();
+            if (filesList != null) {
+                for (File child : filesList) {
+                    deleteRecursive(child, exceptions);
+                }
+            }
+        }
+        fileOrDirectory.delete();
     }
 }
