@@ -7,20 +7,19 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import org.edx.mobile.R;
+import org.edx.mobile.logger.Logger;
 import org.edx.mobile.model.api.TranscriptModel;
+import org.edx.mobile.util.IOUtils;
 import org.edx.mobile.util.Sha1Util;
 import org.edx.mobile.util.TranscriptDownloader;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
-import org.edx.mobile.logger.Logger;
-import org.edx.mobile.util.IOUtils;
 
 @Singleton
 public class TranscriptManager {
@@ -49,11 +48,8 @@ public class TranscriptManager {
      * This function checks if the file exists for that link
      * @param url
      * @return 
-     * @throws NoSuchAlgorithmException
-     * @throws UnsupportedEncodingException
      */
-    public boolean has(String url) throws NoSuchAlgorithmException,
-    UnsupportedEncodingException {
+    public boolean has(String url) {
         String hash = Sha1Util.SHA1(url);
         File file = new File(transcriptFolder, hash);
         return file.exists();
@@ -64,13 +60,9 @@ public class TranscriptManager {
      * This function is used to saved contents of a String to a file
      * @param url - Url of Transcript
      * @param response - This is the String which needs to be saved into a file
-     * @throws NoSuchAlgorithmException
-     * @throws UnsupportedEncodingException
      * @throws IOException
      */
-    public void put(String url, String response)
-            throws NoSuchAlgorithmException, UnsupportedEncodingException,
-            IOException {
+    public void put(String url, String response) throws IOException {
         String hash = Sha1Util.SHA1(url);
         File file = new File(transcriptFolder, hash);
         FileOutputStream out = new FileOutputStream(file);
@@ -84,26 +76,20 @@ public class TranscriptManager {
      * @param url - This is the URL for SRT files
      * @return String - This is the response of the File contents
      * @throws IOException
-     * @throws NoSuchAlgorithmException
      */
-    public String get(String url) throws IOException, NoSuchAlgorithmException {
-        try{
-            String hash = Sha1Util.SHA1(url);
-            File file = new File(transcriptFolder, hash);
-            if (!file.exists()) { 
-                // not in cache
-                return null;
-            }
-
-            FileInputStream in = new FileInputStream(file);
-            String cache = IOUtils.toString(in, Charset.defaultCharset());
-            in.close();
-            logger.debug("Cache.get=" + hash);
-            return cache;
-        }catch(Exception e){
-            logger.error(e);
+    public String get(String url) throws IOException {
+        String hash = Sha1Util.SHA1(url);
+        File file = new File(transcriptFolder, hash);
+        if (!file.exists()) {
+            // not in cache
+            return null;
         }
-        return null;
+
+        FileInputStream in = new FileInputStream(file);
+        String cache = IOUtils.toString(in, Charset.defaultCharset());
+        in.close();
+        logger.debug("Cache.get=" + hash);
+        return cache;
     }
 
 
@@ -112,34 +98,24 @@ public class TranscriptManager {
      * @param url - This is the URL for SRT files
      * @return String - This is the response of the File contents
      * @throws IOException
-     * @throws NoSuchAlgorithmException
      */
-    public InputStream getInputStream(String url) throws IOException, NoSuchAlgorithmException {
-        try{
-            String hash = Sha1Util.SHA1(url);
-            File file = new File(transcriptFolder, hash);
-            if (!file.exists()) { 
-                // not in cache
-                return null;
-            }
-
-            InputStream in = new FileInputStream(file);
-            return in;
-        }catch(Exception e){
-            logger.error(e);
+    public InputStream getInputStream(String url) throws IOException {
+        String hash = Sha1Util.SHA1(url);
+        File file = new File(transcriptFolder, hash);
+        if (!file.exists()) {
+            // not in cache
+            return null;
         }
-        return null;
+
+        return new FileInputStream(file);
     }
 
 
     /**
      * This function is used to handle downloading of SRT files and saving them
      * @param downloadLink
-     * @throws NoSuchAlgorithmException
-     * @throws UnsupportedEncodingException
      */
-    public void startTranscriptDownload(final String downloadLink) 
-            throws NoSuchAlgorithmException, UnsupportedEncodingException{
+    public void startTranscriptDownload(final String downloadLink) {
         //Uri target = Uri.fromFile(new File(transcriptFolder, Sha1Util.SHA1(downloadLink)));
         if(downloadLink==null){
             return;
@@ -153,10 +129,6 @@ public class TranscriptManager {
                 public void onDownloadComplete(String response) {
                     try {
                         put(downloadLink, response);
-                    } catch (NoSuchAlgorithmException e) {
-                        logger.error(e);
-                    } catch (UnsupportedEncodingException e) {
-                        logger.error(e);
                     } catch (IOException e) {
                         logger.error(e);
                     }
@@ -182,58 +154,22 @@ public class TranscriptManager {
         }
 
         if(transcript.chineseUrl!=null){
-            try {
-                startTranscriptDownload(transcript.chineseUrl);
-            } catch (NoSuchAlgorithmException e) {
-                logger.error(e);
-            } catch (UnsupportedEncodingException e) {
-                logger.error(e);
-            }
+            startTranscriptDownload(transcript.chineseUrl);
         }
         if(transcript.englishUrl!=null){
-            try {
-                startTranscriptDownload(transcript.englishUrl);
-            } catch (NoSuchAlgorithmException e) {
-                logger.error(e);
-            } catch (UnsupportedEncodingException e) {
-                logger.error(e);
-            }
+            startTranscriptDownload(transcript.englishUrl);
         }
         if(transcript.frenchUrl!=null){
-            try {
-                startTranscriptDownload(transcript.frenchUrl);
-            } catch (NoSuchAlgorithmException e) {
-                logger.error(e);
-            } catch (UnsupportedEncodingException e) {
-                logger.error(e);
-            }
+            startTranscriptDownload(transcript.frenchUrl);
         }
         if(transcript.germanUrl!=null){
-            try {
-                startTranscriptDownload(transcript.germanUrl);
-            } catch (NoSuchAlgorithmException e) {
-                logger.error(e);
-            } catch (UnsupportedEncodingException e) {
-                logger.error(e);
-            }
+            startTranscriptDownload(transcript.germanUrl);
         }
         if(transcript.portugueseUrl!=null){
-            try {
-                startTranscriptDownload(transcript.portugueseUrl);
-            } catch (NoSuchAlgorithmException e) {
-                logger.error(e);
-            } catch (UnsupportedEncodingException e) {
-                logger.error(e);
-            }
+            startTranscriptDownload(transcript.portugueseUrl);
         }
         if(transcript.spanishUrl!=null){
-            try {
-                startTranscriptDownload(transcript.spanishUrl);
-            } catch (NoSuchAlgorithmException e) {
-                logger.error(e);
-            } catch (UnsupportedEncodingException e) {
-                logger.error(e);
-            }
+            startTranscriptDownload(transcript.spanishUrl);
         }
     }
 
@@ -301,13 +237,7 @@ public class TranscriptManager {
                 response = getInputStream(url);
             return response;
             }
-        } catch (NoSuchAlgorithmException e) {
-            logger.error(e);
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e);
         } catch (IOException e) {
-            logger.error(e);
-        } catch (Exception e) {
             logger.error(e);
         }
         return null;

@@ -261,17 +261,10 @@ public class PrefManager {
      * @param username
      * @param courseId
      * @return
-     * @throws Exception
      */
     public static String getPrefNameForLastAccessedBy(String username, String courseId) {
         String raw = username + "-" + courseId + "-last-accessed-subsection_info";
-        try {
-            String hash = Sha1Util.SHA1(raw);
-            return hash;
-        } catch (Exception ex) {
-            logger.error(ex);
-        }
-        return raw;
+        return Sha1Util.SHA1(raw);
     }
 
     public static class AppInfoPrefManager extends PrefManager {

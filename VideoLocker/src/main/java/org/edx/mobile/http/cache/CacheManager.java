@@ -6,16 +6,14 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import org.edx.mobile.logger.Logger;
-import org.edx.mobile.util.Sha1Util;
 import org.edx.mobile.util.IOUtils;
+import org.edx.mobile.util.Sha1Util;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.security.NoSuchAlgorithmException;
 
 @Singleton
 public class CacheManager {
@@ -34,16 +32,13 @@ public class CacheManager {
         }
     }
 
-    public boolean has(String url) throws NoSuchAlgorithmException,
-            UnsupportedEncodingException {
+    public boolean has(String url) {
         String hash = Sha1Util.SHA1(url);
         File file = new File(cacheFolder, hash);
         return file.exists();
     }
 
-    public void put(String url, String response)
-            throws NoSuchAlgorithmException, UnsupportedEncodingException,
-            IOException {
+    public void put(String url, String response) throws IOException {
         String hash = Sha1Util.SHA1(url);
         File file = new File(cacheFolder, hash);
         FileOutputStream out = new FileOutputStream(file);
@@ -52,7 +47,7 @@ public class CacheManager {
         logger.debug("Cache.put = " + hash);
     }
 
-    public String get(String url) throws IOException, NoSuchAlgorithmException {
+    public String get(String url) throws IOException {
         String hash = Sha1Util.SHA1(url);
         File file = new File(cacheFolder, hash);
 
