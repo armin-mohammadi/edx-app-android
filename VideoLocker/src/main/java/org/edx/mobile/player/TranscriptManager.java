@@ -1,7 +1,6 @@
 package org.edx.mobile.player;
 
 import android.content.Context;
-import android.os.Environment;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -9,6 +8,7 @@ import com.google.inject.Singleton;
 import org.edx.mobile.R;
 import org.edx.mobile.logger.Logger;
 import org.edx.mobile.model.api.TranscriptModel;
+import org.edx.mobile.util.AppConstants;
 import org.edx.mobile.util.IOUtils;
 import org.edx.mobile.util.Sha1Util;
 import org.edx.mobile.util.TranscriptDownloader;
@@ -30,24 +30,18 @@ public class TranscriptManager {
 
     @Inject
     public TranscriptManager(Context context) {
-        try{
-            this.context = context;
-            File android = new File(Environment.getExternalStorageDirectory(), "Android");
-            File downloadsDir = new File(android, "data");
-            File packDir = new File(downloadsDir, context.getPackageName());
-            transcriptFolder = new File(packDir, "srtFolder");
-            if(!transcriptFolder.exists()){
-                transcriptFolder.mkdirs();
-            }
-        }catch(Exception e){
-            logger.error(e);
+        this.context = context;
+        File videosDir = new File(context.getExternalFilesDir(null).getParent(), AppConstants.Folders.VIDEOS);
+        transcriptFolder = new File(videosDir, AppConstants.Folders.SUBTITLES);
+        if (!transcriptFolder.exists()) {
+            transcriptFolder.mkdirs();
         }
     }
 
     /**
      * This function checks if the file exists for that link
      * @param url
-     * @return 
+     * @return
      */
     public boolean has(String url) {
         String hash = Sha1Util.SHA1(url);
@@ -124,7 +118,7 @@ public class TranscriptManager {
         //If file is not present in the Folder, then start downloading
         if(!has(downloadLink)) {
             TranscriptDownloader td = new TranscriptDownloader(context, downloadLink) {
-                
+
                 @Override
                 public void onDownloadComplete(String response) {
                     try {
@@ -133,7 +127,7 @@ public class TranscriptManager {
                         logger.error(e);
                     }
                 }
-                
+
                 @Override
                 public void handle(Exception ex) {
                     logger.error(ex);
@@ -185,35 +179,35 @@ public class TranscriptManager {
         LinkedHashMap<String, InputStream> transcriptList = new LinkedHashMap<String, InputStream>();
         try{
             if(transcript.chineseUrl!=null){
-                transcriptList.put(context.getString(R.string.cc_chinese_code), 
+                transcriptList.put(context.getString(R.string.cc_chinese_code),
                         fetchTranscriptResponse(transcript.chineseUrl));
             }
 
             if(transcript.englishUrl!=null){
-                transcriptList.put(context.getString(R.string.cc_english_code), 
+                transcriptList.put(context.getString(R.string.cc_english_code),
                         fetchTranscriptResponse(transcript.englishUrl));
             }
 
             if(transcript.frenchUrl!=null){
-                transcriptList.put(context.getString(R.string.cc_french_code), 
+                transcriptList.put(context.getString(R.string.cc_french_code),
                         fetchTranscriptResponse(transcript.frenchUrl));
             }
-            
+
             if(transcript.germanUrl!=null){
-                transcriptList.put(context.getString(R.string.cc_german_code), 
+                transcriptList.put(context.getString(R.string.cc_german_code),
                         fetchTranscriptResponse(transcript.germanUrl));
             }
 
             if(transcript.portugueseUrl!=null){
-                transcriptList.put(context.getString(R.string.cc_portugal_code), 
+                transcriptList.put(context.getString(R.string.cc_portugal_code),
                         fetchTranscriptResponse(transcript.portugueseUrl));
             }
 
             if(transcript.spanishUrl!=null){
-                transcriptList.put(context.getString(R.string.cc_spanish_code), 
+                transcriptList.put(context.getString(R.string.cc_spanish_code),
                         fetchTranscriptResponse(transcript.spanishUrl));
             }
-            
+
             return transcriptList;
         }catch(Exception e){
             logger.error(e);

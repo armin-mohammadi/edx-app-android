@@ -8,9 +8,12 @@ package org.edx.mobile.module.db;
 public final class DbStructure {
     
     public static final String NAME = "downloads.db";
-    //Updated to Version 4 to add flag to indicate that video is only available for web
-    //Updated to Version 5 to create a new table to record learning history for assessment
-    public static final int VERSION = 5;
+    /**
+     * Updated to Version 4 to add flag to indicate that video is only available for web
+     * Updated to Version 5 to create a new table to record learning history for assessment
+     * Updated to Version 6 to swap every occurrence of username field to its SHA1 counterpart
+     */
+    public static final int VERSION = 6;
 
     public static final class Table {
         public static final String DOWNLOADS = "downloads";

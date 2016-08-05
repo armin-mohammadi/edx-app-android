@@ -15,7 +15,10 @@ import org.edx.mobile.module.db.DataCallback;
 import org.edx.mobile.module.db.DbStructure;
 import org.edx.mobile.module.db.IDatabase;
 import org.edx.mobile.module.prefs.LoginPrefs;
+import org.edx.mobile.util.Sha1Util;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Singleton
@@ -32,7 +35,9 @@ public class IDatabaseImpl extends IDatabaseBaseImpl implements IDatabase {
 
     @Nullable
     private String username() {
-        return loginPrefs.getUsername();
+        final String username = loginPrefs.getUsername();
+        if (username != null) return Sha1Util.SHA1(username);
+        return null;
     }
 
     @Override

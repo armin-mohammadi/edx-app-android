@@ -1,11 +1,17 @@
 package org.edx.mobile.module.db.impl;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import org.edx.mobile.logger.Logger;
 import org.edx.mobile.module.db.DbStructure;
+import org.edx.mobile.util.AppConstants;
+import org.edx.mobile.util.Sha1Util;
+
+import java.io.File;
 
 /**
  * This class is an implementation of {@link SQLiteOpenHelper} and handles
@@ -14,17 +20,18 @@ import org.edx.mobile.module.db.DbStructure;
  *
  */
 class DbHelper extends SQLiteOpenHelper {
-
     private SQLiteDatabase sqliteDb;
+    private Context mContext;
     protected final Logger logger = new Logger(getClass().getName());
 
     public DbHelper(Context context) {
         super(context, DbStructure.NAME, null, DbStructure.VERSION);
+        mContext = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE "                        + DbStructure.Table.DOWNLOADS 
+        String sql = "CREATE TABLE "                        + DbStructure.Table.DOWNLOADS
                 + " ("
                 + DbStructure.Column.ID                     + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + DbStructure.Column.USERNAME               + " TEXT, "
@@ -52,7 +59,7 @@ class DbHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
 
         createAssessmentTable(db);
-        
+
         logger.debug("Database created");
     }
 
@@ -109,12 +116,60 @@ class DbHelper extends SQLiteOpenHelper {
                 createAssessmentTable(db);
             }
 
+            if (oldVersion < 6) {
+                Cursor cursor = db.query(false, DbStructure.Table.DOWNLOADS,
+                        new String[]{DbStructure.Column.ID, DbStructure.Column.USERNAME,
+                                DbStructure.Column.FILEPATH}, null, null, null, null, null, null);
+                if (cursor != null) {
+                    final File appExternalDir = mContext.getExternalFilesDir(null).getParentFile();
+                    try {
+                        while (cursor.moveToNext()) {
+                            final int id = cursor.getInt(0);
+                            final String username = cursor.getString(1);
+                            final String filePath = cursor.getString(2);
+                            final String encryptedUsername = Sha1Util.SHA1(username);
+                            final String newFilePath = filePath.replace(
+                                    appExternalDir.getAbsolutePath() + "/" + username,
+                                    appExternalDir.getAbsolutePath() + "/"
+                                            + AppConstants.Folders.VIDEOS + "/"
+                                            + encryptedUsername);
+
+                            // First update the folder names
+                            final File previousFolder = new File(appExternalDir, username);
+                            if (previousFolder.exists()) {
+                                final File newFolder = new File(appExternalDir,
+                                        AppConstants.Folders.VIDEOS + "/" + encryptedUsername);
+                                if (!newFolder.exists()) newFolder.mkdirs();
+                                previousFolder.renameTo(newFolder);
+                            }
+
+                            // Then update the database rows
+                            final ContentValues updatedValues = new ContentValues();
+                            updatedValues.put(DbStructure.Column.USERNAME, encryptedUsername);
+                            updatedValues.put(DbStructure.Column.FILEPATH, newFilePath);
+                            db.update(DbStructure.Table.DOWNLOADS, updatedValues,
+                                    DbStructure.Column.ID + "=" + id, null);
+                        }
+                    } finally {
+                        cursor.close();
+                    }
+                    // Now migrate the subtitles folder
+                    final File previousSrtFolder = new File(appExternalDir, "srtFolder");
+                    if (previousSrtFolder.exists()) {
+                        final File newSrtFolder = new File(appExternalDir,
+                                AppConstants.Folders.VIDEOS + "/" + AppConstants.Folders.SUBTITLES);
+                        if (!newSrtFolder.exists()) newSrtFolder.mkdirs();
+                        previousSrtFolder.renameTo(newSrtFolder);
+                    }
+                }
+            }
+
             logger.debug("Database upgraded from " + oldVersion + " to " + newVersion);
         }catch(Exception e){
             logger.error(e);
         }
     }
-    
+
     /**
      * Returns singleton writable {@link SQLiteDatabase} object.
      * @return
@@ -126,11 +181,11 @@ class DbHelper extends SQLiteOpenHelper {
         }
         return sqliteDb;
     }
-    
+
     @Override
     public synchronized void close() {
         super.close();
-        
+
         sqliteDb = null;
         logger.debug("Database closed");
     }

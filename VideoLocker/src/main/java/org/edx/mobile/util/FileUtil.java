@@ -1,7 +1,6 @@
 package org.edx.mobile.util;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

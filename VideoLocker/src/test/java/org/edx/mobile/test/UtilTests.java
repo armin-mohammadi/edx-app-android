@@ -4,9 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 
 import org.edx.mobile.util.BrowserUtil;
+import org.edx.mobile.util.Sha1Util;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.*;
 
 public class UtilTests extends BaseTestCase {
@@ -31,5 +36,11 @@ public class UtilTests extends BaseTestCase {
         assertTrue(BrowserUtil.isUrlOfHost("https://edx.org/", host));
         assertFalse(BrowserUtil.isUrlOfHost("https://fake-domain.com/edx.org/", host));
         assertFalse(BrowserUtil.isUrlOfHost("https://fake-domain.com/xyz/", host));
+    }
+
+    @Test
+    public void testSha1Encryption() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        assertEquals("94ca247fff5ad413788a1c8d8c80394a246dba1c", Sha1Util.SHA1("khalid"));
+        assertEquals("d52f2b07afef758721dd630fcbc15f83fa2e42aa", Sha1Util.SHA1("some_vague_string"));
     }
 }

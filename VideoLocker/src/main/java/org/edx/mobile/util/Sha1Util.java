@@ -1,5 +1,7 @@
 package org.edx.mobile.util;
 
+import android.support.annotation.NonNull;
+
 import org.edx.mobile.logger.Logger;
 
 import java.io.UnsupportedEncodingException;
@@ -13,7 +15,7 @@ public class Sha1Util {
      * @param text The plain text to encrypt.
      * @return SHA1 hash of the given text or the plain text if encryption failed.
      */
-    public static String SHA1(String text) {
+    public static String SHA1(@NonNull String text) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             md.update(text.getBytes("iso-8859-1"), 0, text.length());
@@ -25,7 +27,7 @@ public class Sha1Util {
         }
     }
 
-    private static String convertToHex(byte[] data) {
+    private static String convertToHex(@NonNull byte[] data) {
         StringBuilder buf = new StringBuilder();
         for (byte b : data) {
             int halfbyte = (b >>> 4) & 0x0F;
