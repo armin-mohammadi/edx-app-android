@@ -17,8 +17,6 @@ import org.edx.mobile.module.db.IDatabase;
 import org.edx.mobile.module.prefs.LoginPrefs;
 import org.edx.mobile.util.Sha1Util;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Singleton
@@ -756,6 +754,30 @@ public class IDatabaseImpl extends IDatabaseBaseImpl implements IDatabase {
                 new String[]{courseId, section, subSection, username(),
                         String.valueOf(DownloadedState.DOWNLOADING.ordinal())}, null);
         op.setCallback(callback);
+        return enqueue(op);
+    }
+
+    @Override
+    public List<String> getUniqueCourseIdsForDownloadedVideos(final DataCallback<List<String>> callback) {
+        DbOperationGetColumn<String> op = new DbOperationGetColumn<String>(true,
+                DbStructure.Table.DOWNLOADS,
+                new String[]{DbStructure.Column.EID},
+                DbStructure.Column.USERNAME + "=? AND " + DbStructure.Column.DOWNLOADED + "=?",
+                new String[]{username(), String.valueOf(DownloadedState.DOWNLOADED.ordinal())},
+                null, String.class);
+        if (callback != null) {
+            op.setCallback(new DataCallback<List<String>>() {
+                @Override
+                public void onResult(List<String> result) {
+                    callback.sendResult(result);
+                }
+
+                @Override
+                public void onFail(Exception ex) {
+                    callback.sendException(ex);
+                }
+            });
+        }
         return enqueue(op);
     }
 

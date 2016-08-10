@@ -468,5 +468,9 @@ public interface IDatabase {
      */
     boolean isUnitAccessed(DataCallback<Boolean> callback, String unitId);
 
+    /**
+     * Get the list of course ids for which a specific user has downloaded atleast 1 video.
+     */
+    List<String> getUniqueCourseIdsForDownloadedVideos(DataCallback<List<String>> callback);
 
 }

@@ -345,6 +345,14 @@ public class PrefManager {
         public void setLastCourseStructureFetch(String courseId, long timestamp) {
             super.put(Key.LAST_COURSE_STRUCTURE_FETCH + "_" + courseId, timestamp);
         }
+
+        public boolean isVideosCacheRestored() {
+            return getBoolean(Key.VIDEOS_CACHE_RESTORED, false);
+        }
+
+        public void setIsVideosCacheRestored(boolean restored) {
+            super.put(Key.VIDEOS_CACHE_RESTORED, restored);
+        }
     }
 
     /**
@@ -392,6 +400,7 @@ public class PrefManager {
         public static final String AppSettingNeedSyncWithParse = "AppSettingNeedSyncWithParse";
         public static final String UserPrefVideoModel = "UserPrefVideoModel";
         public static final String LAST_COURSE_STRUCTURE_FETCH = "LastCourseStructureFetch";
+        public static final String VIDEOS_CACHE_RESTORED = "VideosCacheRestored";
 
 
     }

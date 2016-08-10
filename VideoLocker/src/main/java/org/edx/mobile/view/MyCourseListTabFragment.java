@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.edx.mobile.R;
+import org.edx.mobile.base.MainApplication;
 import org.edx.mobile.event.EnrolledInCourseEvent;
 import org.edx.mobile.exception.AuthException;
 import org.edx.mobile.http.HttpResponseStatusException;
@@ -16,6 +17,8 @@ import org.edx.mobile.loader.CoursesAsyncLoader;
 import org.edx.mobile.model.api.EnrolledCoursesResponse;
 import org.edx.mobile.module.analytics.ISegment;
 import org.edx.mobile.module.prefs.LoginPrefs;
+import org.edx.mobile.module.prefs.PrefManager;
+import org.edx.mobile.task.RestoreVideosCacheDataTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +35,19 @@ public class MyCourseListTabFragment extends CourseListTabFragment {
     private boolean refreshOnResume;
 
     @Inject
-    LoginPrefs loginPrefs;
+    private LoginPrefs loginPrefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         environment.getSegment().trackScreenView(ISegment.Screens.MY_COURSES);
         EventBus.getDefault().register(this);
+
+        // Restore cache of the courses for which the user has downloaded any videos
+        PrefManager.UserPrefManager prefs = new PrefManager.UserPrefManager(MainApplication.application);
+        if (!prefs.isVideosCacheRestored()) {
+            new RestoreVideosCacheDataTask(MainApplication.application).execute();
+        }
     }
 
     @Override
