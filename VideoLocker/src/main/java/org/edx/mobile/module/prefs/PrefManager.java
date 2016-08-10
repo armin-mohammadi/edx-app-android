@@ -152,6 +152,7 @@ public class PrefManager {
 
     /**
      * Returns current user's profile from the preferences.
+     *
      * @return
      */
     @Nullable
@@ -160,7 +161,7 @@ public class PrefManager {
         if (json == null) {
             return null;
         }
-        
+
         Gson gson = new GsonBuilder().create();
         ProfileModel res = gson.fromJson(json, ProfileModel.class);
 
@@ -180,9 +181,10 @@ public class PrefManager {
         Gson gson = new GsonBuilder().create();
         return gson.fromJson(json, ProfileImage.class);
     }
-    
+
     /**
      * Returns current user's profile from the preferences.
+     *
      * @return
      */
     public AuthResponse getCurrentAuth() {
@@ -193,7 +195,7 @@ public class PrefManager {
 
         Gson gson = new GsonBuilder().create();
         AuthResponse res = gson.fromJson(json, AuthResponse.class);
-        
+
         return res;
     }
 
@@ -211,12 +213,12 @@ public class PrefManager {
     }
 
     /**
-     *  check if app is currently logged in through Google/Facebook
+     * check if app is currently logged in through Google/Facebook
      */
-    public boolean hasAuthTokenSocialCookie(){
-        return  null !=  getString(Key.AUTH_TOKEN_SOCIAL_COOKIE);
+    public boolean hasAuthTokenSocialCookie() {
+        return null != getString(Key.AUTH_TOKEN_SOCIAL_COOKIE);
     }
-    
+
     /**
      * Stores information of last accesses subsection for given id.
      * Modification date is also stored for current time.
@@ -355,6 +357,10 @@ public class PrefManager {
         public static final String FEATURES = "features";
         public static final String APP_INFO = "pref_app_info";
         public static final String USER_PREF = "pref_user";
+
+        public static String[] getAll() {
+            return new String[]{LOGIN, WIFI, VIDEOS, FEATURES, APP_INFO, USER_PREF};
+        }
     }
 
     /**
@@ -396,5 +402,12 @@ public class PrefManager {
          */
         public static final String BACKEND_FACEBOOK = "facebook";
         public static final String BACKEND_GOOGLE = "google-oauth2";
+    }
+
+    public static void nukeSharedPreferences() {
+        for (String prefName : Pref.getAll()) {
+            MainApplication.application.getSharedPreferences(
+                    prefName, Context.MODE_PRIVATE).edit().clear().apply();
+        }
     }
 }
