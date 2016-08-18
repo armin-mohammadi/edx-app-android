@@ -10,7 +10,6 @@
         "errorMessages": {},
         "placeholder": "username@domain.com",
         "defaultValue": "",
-        "instructions": "",
         "type": "email",
         "label": "Email"
     }, {
@@ -22,7 +21,6 @@
         "errorMessages": {},
         "placeholder": "",
         "defaultValue": "",
-        "instructions": "This name appears on certificates you earn",
         "type": "text",
         "label": "Full name"
     }, {
@@ -35,7 +33,6 @@
         "errorMessages": {},
         "placeholder": "",
         "defaultValue": "",
-        "instructions": "This name identifies you in courses and <b>cannot be changed</b>",
         "type": "text",
         "label": "Public username"
     }, {
@@ -48,7 +45,6 @@
         "errorMessages": {},
         "placeholder": "",
         "defaultValue": "",
-        "instructions": "",
         "type": "password",
         "label": "Password"
     }, {
@@ -60,11 +56,10 @@
         },
         "placeholder": "",
         "defaultValue": "",
-        "instructions": "",
         "type": "select",
         "options": [{
             "default": true,
-            "name": "--",
+            "name": "Country",
             "value": ""
         }, {
             "name": "Afghanistan",
@@ -822,11 +817,10 @@
         "errorMessages": {},
         "placeholder": "",
         "defaultValue": "",
-        "instructions": "",
         "type": "select",
         "options": [{
             "default": true,
-            "name": "--",
+            "name": "Gender",
             "value": ""
         }, {
             "name": "Male",
@@ -846,11 +840,10 @@
         "errorMessages": {},
         "placeholder": "",
         "defaultValue": "",
-        "instructions": "",
         "type": "select",
         "options": [{
             "default": true,
-            "name": "--",
+            "name": "Year of Birth",
             "value": ""
         }, {
             "name": "2015",
@@ -1221,11 +1214,10 @@
         "errorMessages": {},
         "placeholder": "",
         "defaultValue": "",
-        "instructions": "",
         "type": "select",
         "options": [{
             "default": true,
-            "name": "--",
+            "name": "Highest Level of Education",
             "value": ""
         }, {
             "name": "Doctorate",
@@ -1263,7 +1255,6 @@
         "errorMessages": {},
         "placeholder": "",
         "defaultValue": "",
-        "instructions": "",
         "type": "textarea",
         "label": "Tell us why you're interested in edX"
     }, {
@@ -1279,7 +1270,6 @@
         },
         "placeholder" : "",
         "defaultValue": false,
-        "instructions": "",
         "type": "checkbox",
         "label": "I agree to the edX <a href=\"https://www.edx.org/terms\">Terms of Service and Honor Code</a>."
     }],

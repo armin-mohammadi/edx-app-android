@@ -505,6 +505,9 @@
     <string name="enrollment_failure">We could not enroll you in this course at this time.</string>
     <!-- Alert dialog button allowing user to repeat their attempted action -->
     <string name="try_again">Try again</string>
+    <!-- Registration error -->
+    <string name="registration_error_title">Registration Error</string>
+    <string name="registration_error_message">Update the highlighted fields and try again.</string>
 
     <!-- data charges may apply dialog text -->
     <!-- Alert dialog title shown for users whose in app data is zero rated, when they follow a link outside the app -->

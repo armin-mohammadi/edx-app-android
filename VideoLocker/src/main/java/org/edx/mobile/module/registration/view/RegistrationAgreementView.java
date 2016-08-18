@@ -1,5 +1,6 @@
 package org.edx.mobile.module.registration.view;
 
+import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ class RegistrationAgreementView implements IRegistrationFieldView {
     protected RegistrationFormField mField;
     private View mView;
     protected TextView mInputView;
-    private TextView mErrorView, mInstructionView;
+    private TextView mErrorView;
     private IActionListener actionListener;
 
     public RegistrationAgreementView(RegistrationFormField field, View view) {
@@ -27,7 +28,6 @@ class RegistrationAgreementView implements IRegistrationFieldView {
 
         this.mInputView = (TextView) view.findViewById(R.id.txt_input);
         this.mErrorView = (TextView) view.findViewById(R.id.txt_input_error);
-        this.mInstructionView = (TextView) view.findViewById(R.id.txt_input_instruction);
 
         // display label as HTML and text to be centered horizontally
         mInputView.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -41,14 +41,6 @@ class RegistrationAgreementView implements IRegistrationFieldView {
                 }
             }
         });
-
-        // display instructions if available
-        if (mField.getInstructions() != null && !mField.getInstructions().isEmpty()) {
-            mInstructionView.setVisibility(View.VISIBLE);
-            mInstructionView.setText(mField.getInstructions());
-        } else {
-            mInstructionView.setVisibility(View.GONE);
-        }
 
         // hide error text view
         mErrorView.setVisibility(View.GONE);

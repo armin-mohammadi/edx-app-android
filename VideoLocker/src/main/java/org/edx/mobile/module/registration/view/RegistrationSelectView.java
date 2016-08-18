@@ -1,5 +1,6 @@
 package org.edx.mobile.module.registration.view;
 
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -18,7 +19,7 @@ class RegistrationSelectView implements IRegistrationFieldView {
     private RegistrationFormField mField;
     private View mView;
     protected RegistrationOptionSpinner mInputView;
-    private TextView mErrorView, mInstructionView;
+    private TextView mErrorView;
 
     public RegistrationSelectView(RegistrationFormField field, View view) {
         // create and configure view and save it to an instance variable
@@ -27,13 +28,9 @@ class RegistrationSelectView implements IRegistrationFieldView {
 
         this.mInputView = (RegistrationOptionSpinner) view.findViewById(R.id.input_spinner);
         this.mErrorView = (TextView) view.findViewById(R.id.input_spinner_error);
-        this.mInstructionView = (TextView) view.findViewById(R.id.input_spinner_instruction);
 
         // set prompt
         mInputView.setPrompt(mField.getLabel());
-
-        // set hint
-        mInputView.setHint(mField.getLabel());
 
         RegistrationOption defaultOption = null;
         for (RegistrationOption option : mField.getOptions()) {
@@ -43,14 +40,6 @@ class RegistrationSelectView implements IRegistrationFieldView {
             }
         }
         mInputView.setItems(mField.getOptions(),defaultOption);
-
-        // display instructions if available
-        if (mField.getInstructions() != null && !mField.getInstructions().isEmpty()) {
-            mInstructionView.setVisibility(View.VISIBLE);
-            mInstructionView.setText(mField.getInstructions());
-        } else {
-            mInstructionView.setVisibility(View.GONE);
-        }
 
         // hide error text view
         mErrorView.setVisibility(View.GONE);
@@ -62,7 +51,7 @@ class RegistrationSelectView implements IRegistrationFieldView {
     @Override
     public JsonElement getCurrentValue() {
         // turn text view content into a JsonElement and return it
-        return new JsonPrimitive(mInputView.getSelectedItem().getValue());
+        return new JsonPrimitive(mInputView.getSelectedItemValue());
     }
 
     public boolean setRawValue(String value){
@@ -76,7 +65,7 @@ class RegistrationSelectView implements IRegistrationFieldView {
     @Override
     public boolean hasValue() {
         return (mInputView.getSelectedItem() != null
-                && !TextUtils.isEmpty(mInputView.getSelectedItem().getValue()));
+                && !TextUtils.isEmpty(mInputView.getSelectedItemValue()));
     }
 
     @Override

@@ -36,9 +36,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/signup_social_title_margin_large"
-                android:layout_marginBottom="@dimen/signup_social_title_margin_bottom"
-                android:gravity="left|start"
-                tools:targetApi="17" >
+                android:layout_marginBottom="@dimen/signup_social_title_margin_bottom_large"
+                android:gravity="start"
+                tools:targetApi="17">
 
                 <TextView
                     android:id="@+id/signup_with_title"
@@ -46,8 +46,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/sign_up_with"
-                    android:textColor="@color/light_gray"
-                    android:textSize="14sp" />
+                    android:textColor="@color/grey_text"
+                    android:textSize="@dimen/edx_small"/>
             </LinearLayout>
 
             <include layout="@layout/panel_social_auth" />
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/signup_social_title_margin"
                 android:layout_marginBottom="@dimen/signup_social_title_margin_bottom"
-                android:gravity="left|start"
+                android:gravity="start"
                 tools:targetApi="17" >
 
                 <TextView
@@ -65,11 +65,11 @@
                     style="@style/semibold_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="left|start"
+                    android:gravity="start"
                     android:text="@string/or_sign_up_with_email"
-                    android:textColor="@color/light_gray"
-                    android:textSize="14sp"
-                    tools:targetApi="17" />
+                    android:textColor="@color/grey_text"
+                    android:textSize="@dimen/edx_small"
+                    tools:targetApi="17"/>
             </LinearLayout>
 
             <LinearLayout
@@ -86,33 +86,18 @@
                 android:layout_marginTop="15dp"
                 android:gravity="center">
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="1dp"
-                    android:background="@color/grey_act_background" />
-
                 <TextView
                     android:id="@+id/optional_field_tv"
                     style="@style/semibold_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginEnd="12dp"
+                    android:layout_marginLeft="@dimen/edx_x_small"
+                    android:layout_marginStart="@dimen/edx_x_small"
+                    android:layout_marginRight="@dimen/edx_x_small"
+                    android:layout_marginEnd="@dimen/edx_x_small"
                     android:focusable="true"
-                    android:background="@drawable/selectable_box_overlay"
                     android:text="@string/show_optional_text"
-                    android:textColor="@color/grey_hide_optional_text"
-                    android:textSize="14sp"
-                    tools:targetApi="17" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="1dp"
-                    android:background="@color/grey_act_background" />
+                    android:textSize="@dimen/edx_small" />
             </LinearLayout>
 
             <LinearLayout

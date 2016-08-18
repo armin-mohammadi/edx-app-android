@@ -260,7 +260,9 @@
         <item name="android:textColor">@color/grey_redirected_txt</item>
         <item name="android:gravity" tools:targetApi="17">left|start|center_vertical</item>
         <item name="android:textSize">11sp</item>
-        <item name="android:padding">5dp</item>
+        <item name="android:paddingTop">@dimen/registration_field_vertical_padding</item>
+        <item name="android:paddingLeft">@dimen/registration_field_horizontal_padding</item>
+        <item name="android:paddingRight">@dimen/registration_field_horizontal_padding</item>
     </style>
 
     <!-- Course Card styles -->

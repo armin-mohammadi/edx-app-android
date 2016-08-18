@@ -1,5 +1,6 @@
 package org.edx.mobile.module.registration.view;
 
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ class RegistrationCheckBoxView implements IRegistrationFieldView {
     private RegistrationFormField mField;
     private View mView;
     protected CheckBox mInputView;
-    private TextView mErrorView, mInstructionView;
+    private TextView mErrorView;
 
     public RegistrationCheckBoxView(RegistrationFormField field, View view) {
         // create and configure view and save it to an instance variable
@@ -26,21 +27,12 @@ class RegistrationCheckBoxView implements IRegistrationFieldView {
 
         this.mInputView = (CheckBox) view.findViewById(R.id.checkbox_input);
         this.mErrorView = (TextView) view.findViewById(R.id.checkbox_input_error);
-        this.mInstructionView = (TextView) view.findViewById(R.id.checkbox_input_instruction);
 
         // set hint
         mInputView.setHint(mField.getLabel());
 
         // display default value
         mInputView.setChecked(Boolean.getBoolean(mField.getDefaultValue()));
-
-        // display instructions if available
-        if (mField.getInstructions() != null && !mField.getInstructions().isEmpty()) {
-            mInstructionView.setVisibility(View.VISIBLE);
-            mInstructionView.setText(mField.getInstructions());
-        } else {
-            mInstructionView.setVisibility(View.GONE);
-        }
 
         // hide error text view
         mErrorView.setVisibility(View.GONE);
