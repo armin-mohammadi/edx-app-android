@@ -44,8 +44,6 @@ import org.edx.mobile.user.ProfileImage;
 import org.edx.mobile.util.Config;
 import org.edx.mobile.util.EmailUtil;
 import org.edx.mobile.util.SecurityUtil;
-import org.edx.mobile.view.dialog.IDialogCallback;
-import org.edx.mobile.view.dialog.NetworkCheckDialogFragment;
 import org.edx.mobile.view.my_videos.MyVideosActivity;
 
 import de.greenrobot.event.EventBus;

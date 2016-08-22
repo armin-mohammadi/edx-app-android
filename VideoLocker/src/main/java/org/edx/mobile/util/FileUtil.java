@@ -1,6 +1,8 @@
 package org.edx.mobile.util;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -48,8 +50,9 @@ public class FileUtil {
      * @param fileOrDirectory The file/folder that needs to be deleted.
      * @param exceptions      Name of the file/folder that needs to be skipped while deletion.
      */
-    public static void deleteRecursive(File fileOrDirectory, List<String> exceptions) {
-        if (exceptions.contains(fileOrDirectory.getName())) return;
+    public static void deleteRecursive(@NonNull File fileOrDirectory,
+                                       @Nullable List<String> exceptions) {
+        if (exceptions != null && exceptions.contains(fileOrDirectory.getName())) return;
 
         if (fileOrDirectory.isDirectory()) {
             File[] filesList = fileOrDirectory.listFiles();

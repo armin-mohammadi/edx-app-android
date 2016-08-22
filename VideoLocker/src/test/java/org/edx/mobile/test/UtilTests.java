@@ -8,9 +8,6 @@ import org.edx.mobile.util.Sha1Util;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.*;
 
@@ -39,7 +36,7 @@ public class UtilTests extends BaseTestCase {
     }
 
     @Test
-    public void testSha1Encryption() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void testSha1Encryption() {
         assertEquals("94ca247fff5ad413788a1c8d8c80394a246dba1c", Sha1Util.SHA1("khalid"));
         assertEquals("d52f2b07afef758721dd630fcbc15f83fa2e42aa", Sha1Util.SHA1("some_vague_string"));
     }

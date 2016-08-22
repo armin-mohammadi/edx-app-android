@@ -413,6 +413,9 @@ public class PrefManager {
         public static final String BACKEND_GOOGLE = "google-oauth2";
     }
 
+    /**
+     * Clears all the shared preferences being used in app.
+     */
     public static void nukeSharedPreferences() {
         for (String prefName : Pref.getAll()) {
             MainApplication.application.getSharedPreferences(

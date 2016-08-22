@@ -1,6 +1,7 @@
 package org.edx.mobile.util;
 
-public final class AppConstants {
+public enum AppConstants {
+    ;
 
     @Deprecated // This is not a constant. Should move it to the activity and use savedInstanceState.
     public static boolean myVideosDeleteMode = false;
