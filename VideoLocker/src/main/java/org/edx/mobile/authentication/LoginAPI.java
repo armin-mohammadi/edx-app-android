@@ -19,6 +19,7 @@ import org.edx.mobile.model.api.ResetPasswordResponse;
 import org.edx.mobile.module.analytics.ISegment;
 import org.edx.mobile.module.notification.NotificationDelegate;
 import org.edx.mobile.module.prefs.LoginPrefs;
+import org.edx.mobile.module.registration.model.RegistrationDescription;
 import org.edx.mobile.util.Config;
 import org.edx.mobile.util.observer.BasicObservable;
 import org.edx.mobile.util.observer.Observable;
@@ -141,6 +142,11 @@ public class LoginAPI {
     public void logOut(@NonNull final String refreshToken) throws HttpException {
         loginService.revokeAccessToken(config.getOAuthClientId(),
                 refreshToken, ApiConstants.TOKEN_TYPE_REFRESH);
+    }
+
+    @NonNull
+    public RegistrationDescription getRegistrationDescription() throws Exception {
+        return loginService.getRegistrationDescription();
     }
 
     @NonNull

@@ -483,6 +483,8 @@
     <!-- Registration Screen -->
     <!-- Create account agreement. Followed by list of agreement names like "End User License Agreement" -->
     <string name="by_creating_account">By creating an {platform_name} account, you agree to the </string>
+    <!-- Create account agreement. Text associated with the TOS and honor code link -->
+    <string name="tos_and_honor">{platform_name} Terms of Service and Honor Code</string>
     <!-- Button text allowing user to show hidden optional registration fields -->
     <string name="show_optional_text">Show optional fields</string>
     <!-- Button text allowing user to hide visible optional registration fields -->

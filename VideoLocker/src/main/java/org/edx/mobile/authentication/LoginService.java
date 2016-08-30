@@ -6,6 +6,7 @@ import org.edx.mobile.http.HttpException;
 import org.edx.mobile.model.api.ProfileModel;
 import org.edx.mobile.model.api.ResetPasswordResponse;
 import org.edx.mobile.module.prefs.LoginPrefs;
+import org.edx.mobile.module.registration.model.RegistrationDescription;
 
 import java.util.Map;
 
@@ -28,6 +29,12 @@ public interface LoginService {
     @FormUrlEncoded
     @POST(ApiConstants.URL_REGISTRATION)
     Response register(@FieldMap Map<String, String> parameters) throws HttpException;
+
+    /**
+     * @return Description of what registration screen should look like
+     */
+    @GET(ApiConstants.URL_REGISTRATION)
+    RegistrationDescription getRegistrationDescription() throws HttpException;
 
     /**
      * Depending on the query parameters for this endpoint, a different action will be triggered
