@@ -1,11 +1,10 @@
 package org.edx.mobile.view;
 
+import android.app.ActionBar;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.TextView;
 
-import org.assertj.android.api.Assertions;
 import org.edx.mobile.R;
 import org.edx.mobile.test.BaseTestCase;
 import org.edx.mobile.view.dialog.WebViewDialogActivity;
@@ -48,15 +47,16 @@ public class WebViewDialogActivityTest extends BaseTestCase {
         assertNotNull(webView);
         final ShadowWebView shadowWebView = Shadows.shadowOf(webView);
         assertEquals(shadowWebView.getLastLoadedUrl(), url);
-        final TextView titleView = (TextView) dialogView.findViewById(R.id.tv_dialog_title);
-        assertNotNull(titleView);
+        android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+        assertNotNull(actionBar);
         if (TextUtils.isEmpty(title)) {
-            Assertions.assertThat(titleView).isNotVisible();
+            assertTrue(!actionBar.isShowing());
         } else {
-            Assertions.assertThat(titleView).isVisible();
-            Assertions.assertThat(titleView).hasText(title);
+            assertTrue(actionBar.isShowing());
+            assertTrue(title.equals(activity.getTitle()));
         }
-        dialogView.findViewById(R.id.positiveButton).performClick();
+
+        activity.onBackPressed();
         assertTrue(activity.isFinishing());
     }
 }

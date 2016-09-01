@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,8 +29,7 @@ import org.edx.mobile.util.Config;
 import org.edx.mobile.util.IntentFactory;
 import org.edx.mobile.util.NetworkUtil;
 import org.edx.mobile.util.ResourceUtil;
-import org.edx.mobile.view.dialog.ResetPasswordActivity;
-import org.edx.mobile.view.dialog.SimpleAlertDialog;
+import org.edx.mobile.view.dialog.ResetPasswordAlertDialogFragment;
 import org.edx.mobile.view.login.LoginPresenter;
 
 public class LoginActivity extends PresenterActivity<LoginPresenter, LoginPresenter.LoginViewInterface> implements SocialLoginDelegate.MobileLoginCallback {
@@ -85,7 +83,7 @@ public class LoginActivity extends PresenterActivity<LoginPresenter, LoginPresen
                 if (NetworkUtil.isConnected(LoginActivity.this)) {
                     showResetPasswordDialog();
                 } else {
-                    showNoNetworkDialog();
+                    showErrorDialog(getString(R.string.reset_no_network_title), getString(R.string.network_not_connected));
                 }
             }
         });
@@ -235,24 +233,12 @@ public class LoginActivity extends PresenterActivity<LoginPresenter, LoginPresen
         return activityLoginBinding.emailEt.getText().toString().trim();
     }
 
-    private static final int RESET_PASSWORD_REQUEST_CODE = 0;
-
     private void showResetPasswordDialog() {
-        startActivityForResult(ResetPasswordActivity.newIntent(getEmail()), RESET_PASSWORD_REQUEST_CODE);
+        ResetPasswordAlertDialogFragment.newInstance(this, getEmail()).show(getSupportFragmentManager(), null);
     }
 
     public void showEulaDialog() {
         environment.getRouter().showWebViewDialog(this, getString(R.string.eula_file_link), getString(R.string.end_user_title));
-    }
-
-    public void showNoNetworkDialog() {
-        Bundle args = new Bundle();
-        args.putString(SimpleAlertDialog.EXTRA_TITLE, getString(R.string.reset_no_network_title));
-        args.putString(SimpleAlertDialog.EXTRA_MESSAGE, getString(R.string.reset_no_network_message));
-
-        SimpleAlertDialog noNetworkFragment = SimpleAlertDialog.newInstance(args);
-        noNetworkFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-        noNetworkFragment.show(getSupportFragmentManager(), "dialog");
     }
 
     @Override
